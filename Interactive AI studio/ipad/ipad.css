@@ -347,7 +347,19 @@
     }
 
    
-/* @media screen and (max-width: 430px) {
+@media (max-width: 768px) {
+    .butterfly-text {
+        width: min(40vw, 180px);
+    }
+
+    .modal {
+        width: min(90vw, 360px);
+        height: min(90vh, 600px);
+    }
+}
+/* LEGACY MOBILE SPECIFIC STYLES (PRE-RESPONSIVE REFACTOR. KEPT FOR REFERENCE ONLY - REPLACED BY VIEWPORT BASED RESPONSIVE LAYER 
+ 
+@media screen and (max-width: 430px) {
 
 .butterfly-body 
 {       
