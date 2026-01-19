@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Butterfly Text</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Delius&family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="projector.css">
+        <script type="module" src="projector.js"></script>
+    </head>
+    <body class="butterfly-body">
+        <div id="butterfly-main-container">
+    
+           <!-- <button class="popup-button">
+
+           </button> -->
+            </div>
+    
+        </div>
+           
+    
+      <script type="module">
+
+const textInput = document.getElementById('textInput');
+const modal = document.createElement('div');
+const modalContent = document.querySelector('.modal-content');
+const closeButton = document.createElement('div');
+const mainContainer = document.getElementById("butterfly-main-container");
+let butterflies = [];
+const butterflyTexts = {};
+const maxButterflies = 10;
+let id = 1;
+
+const addTextButton = document.querySelector('.popup-button');
+modal.className = 'modal';
+closeButton.className = 'close-button';
+closeButton.innerHTML = '&times;'
+
+closeButton.addEventListener('click', (event) => {
+    hideModal();
+});
+
+// Add click event to submit button
+// addTextButton.addEventListener('click', () => {
+//     showModalWithTextBox();
+// });
+
+
+
+function getRandomPosition() {
+    const x = Math.random() * (window.innerWidth - 400);
+    const y = Math.random() * (window.innerHeight - 400);
+    return { x, y };
+}
+
+//
+function showModalWithTextBox() 
+{
+  modal.innerHTML = '';
+  const imageWithText = document.createElement('div');
+  
+  const textBox = document.createElement('textarea');
+  const textBox2 = document.createElement('textarea');
+  const nickNameBox = document.createElement('textarea');
+  
+  
+  textBox.className = 'butterfly-text-box';
+  textBox2.className = 'full-text-box';
+  imageWithText.className = 'butterfly-text-2';
+  nickNameBox.className = 'nick-name-box';
+  
+  modal.appendChild(closeButton);
+ 
+  nickNameBox.placeholder = 'nickname';
+  textBox.placeholder = 'short message';
+  textBox2.placeholder = 'message';
+  textBox.maxLength="50";
+  textBox2.maxLength="250";
+  nickNameBox.maxLength="15";
+  
+  
+  imageWithText.appendChild(textBox);
+  
+  
+  const textDiv = document.createElement('div');
+  textDiv.className = 'full-text-box';
+  textDiv.appendChild(textBox2);
+
+
+
+ // Create submit button
+ const submitButton = document.createElement('button');
+ submitButton.innerHTML ="Submit";
+ submitButton.className = 'submit-button';
+
+ const icon = document.createElement('i');
+ icon.className = 'fas fa-check'; // Add Font Awesome class for the check icon
+
+
+
+
+
+ // Add click event to submit button
+submitButton.addEventListener('click', () => {
+    const text1 = textBox.value; // Get text from the first text box
+    const text2 = textBox2.value;
+    const nickName = nickNameBox.value;
+    createButterflyText(text1,nickName);
+    storeText(nickName,text1,text2);
+    hideModal();
+    modal.innerHTML = '';
+});
+
+          
+   
+    modal.appendChild(closeButton);
+    modal.appendChild(imageWithText);
+    modal.appendChild(textBox2);
+    modal.appendChild(nickNameBox);
+    modal.appendChild(submitButton);
+
+    
+    modal.classList.add('active');
+    modal.style.animation = 'pop-in 0.3s ease forwards';
+    mainContainer.appendChild(modal);
+
+
+
+
+
+}
+
+//Stores each Butterfly in list
+function storeText(nickName,shortText,fullText)
+{
+    
+    const data ={};
+    data[shortText]=fullText;
+    butterflyTexts[nickName] = data;
+
+}
+
+
+//Displays the Modal
+function showModal(nickName) 
+{
+  
+    modal.innerHTML='';
+    const fulldata = butterflyTexts[nickName];
+    const butterflyText = Object.keys(fulldata)[0];
+    const fullText = Object.values(fulldata)[0];
+    const imageWithText = document.createElement('div');
+    imageWithText.className = 'butterfly-text-2';
+    
+    const textContent = document.createElement('div');
+    textContent.className = 'text-content';
+    textContent.textContent = butterflyText;
+    
+    imageWithText.appendChild(textContent);
+    
+    const textDiv = document.createElement('div');
+    textDiv.className = 'card-text';
+    textDiv.innerHTML = fullText;
+    
+
+
+    const nickname = document.createElement('div');
+    nickname.className = 'nickname-text';
+    nickname.innerHTML = nickName;
+   
+
+  
+   
+    modal.appendChild(closeButton);
+    modal.appendChild(imageWithText);
+    modal.appendChild(textDiv);
+    modal.appendChild(nickname);
+
+
+    
+
+    modal.classList.add('active');
+    modal.style.animation = 'pop-in 0.3s ease forwards';
+
+
+}
+
+
+//Hides The Modal
+function hideModal() {
+    console.log("HideModal called")
+    modal.classList.remove('active');
+    modal.style.animation = '';
+    
+}
+
+// Create each butterfly
+// Create each butterfly
+function createButterflyText(text,nickName,id) {
+
+        const container = document.createElement('div');
+        container.className = 'butterfly-text';
+        container.id= id;
+
+        const textContent = document.createElement('div');
+        textContent.className = 'text-content';
+        textContent.textContent = text.length > 50 ? text.substring(0, 5) + '...' : text;
+        container.appendChild(textContent);
+
+
+        const position = getRandomPosition();
+        container.style.left = position.x + 'px';
+        container.style.top = position.y + 'px';
+
+
+        container.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        textContent.style.animationDuration = (Math.random() * 0.3 + 0.8) + 's';
+
+        container.addEventListener('click', () => {
+            showModal(nickName);
+        });
+
+        mainContainer.appendChild(container);
+
+        if (butterflies.push(container) > maxButterflies) 
+        {
+            
+            const oldest = butterflies.shift();
+            oldest.remove();
+
+}
+
+}
+
+
+
+// --------------------firebase initialise----------------------
+// Import Firebase and initialize your app
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-storage.js";
+import { getFirestore, collection, addDoc, getDocs,setDoc,doc,query,where } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+// Your Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDiCIatzcDsnHdX_t-m15S1a8pNlrB2egs",
+    authDomain: "mira-7360b.firebaseapp.com",
+    projectId: "mira-7360b",
+    storageBucket: "mira-7360b.appspot.com",
+    messagingSenderId: "76074103771",
+    appId: "1:76074103771:web:1a2d4ca7e8b5df27a82dfe",
+    measurementId: "G-9YL8FHBDRX"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+let timestamps =[];
+
+const db = getFirestore(app); // Initialize Firestore
+const CHAR_BUTTERFLY_COLLECTION = "chat_butterfly";
+// --------------------end firebase initialise----------------------
+
+
+
+// sanitize the user input
+function sanitizeInput(input) {
+    // Create a temporary element to use the browser's built-in HTML escaping
+    const element = document.createElement('div');
+    if (input) {
+        element.innerText = input;
+        return element.innerHTML; // This will escape HTML
+    }
+    return input;
+}
+
+
+
+// --------------------start retrieve the data----------------------
+let ids =[];
+let currIds = [];
+    async function storeId(id)
+{
+      ids.push(id);
+}
+
+
+//Here this function is different form other load Butterfly ones 
+//as it cross check the timestamps and only allows the latest ones
+async function loadButterfliesFromFirestore() 
+    {
+               currIds=[];
+               const q = query(
+               collection(db, CHAR_BUTTERFLY_COLLECTION),
+               where("device", "==", "ipad"),
+               where("session","==","12")
+               );
+               const querySnapshot = await getDocs(q);
+
+               querySnapshot.forEach((doc) => {
+                   const data = doc.data();
+                   const sanitizedKeyword = sanitizeInput(data.keyword);
+                   const sanitizedContent = sanitizeInput(data.content);
+                   const sanitizedNickname = sanitizeInput(data.nickname);
+                   const bid = sanitizeInput(data.id);
+                   currIds.push(bid);
+                   if(!ids.includes(bid))
+                { 
+                    ids.push(bid);
+                    storeText(sanitizedNickname,sanitizedKeyword,sanitizedContent);
+                    createButterflyText(sanitizedKeyword,sanitizedNickname,bid); 
+                }
+               });
+
+
+               clearDeletedButterflies(currIds,ids);
+    
+    }
+
+loadButterfliesFromFirestore();
+
+//Function to load butterlfies every 1 second
+setInterval(loadButterfliesFromFirestore, 1000);
+
+// --------------------end retrieve the data----------------------
+
+// Write to the firebase
+
+
+        function clearDeletedButterflies(current, previous) {
+                // For each item in previous array
+               
+                previous.forEach(item => {
+                    // If item is not in current array (meaning it was deleted)
+                    
+                    if(!current.includes(item)) {
+                     
+                      const cont = document.getElementById(item);
+                      if(cont) {
+                            cont.remove();
+                        }
+                    }
+                })
+            }
+
+      </script>
+    </body>
+    </html>

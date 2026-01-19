@@ -1,0 +1,362 @@
+.butterfly-body 
+{       
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background-image: url('https://cdn.prod.website-files.com/635bd94b8b533d5752353a36/6764b979f188d390f605603a_MirrorXR-Butterfly-Background.jpg'); 
+    background-size:cover;
+       
+ }
+
+#butterfly-main-container{
+        width:100vw;
+        height:100vh;
+        padding: 10px;
+        max-width: 100%; 
+        max-height: 100%;
+        overflow: hidden;
+    }
+    
+#textInput {
+        font-size: 14px;
+        border: 2px solid #ff69b4;
+        border-radius: 5px;
+        background: rgba(237, 220, 34, 0.3);
+        color: #333;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+    }
+
+#textInput:focus {
+        outline: none;
+        border-color: #ff1493;
+        box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+    }
+
+.butterfly-text {
+        position: absolute;
+        margin-right: 10px;
+        cursor: pointer;
+        user-select: none;
+        font-family: "Delius", serif;
+        font-weight: 400;
+        font-style: normal;
+        width: 250px;
+        height: 250px;
+        padding-top: 10px;
+        background-image: url('https://cdn.prod.website-files.com/635bd94b8b533d5752353a36/6763c4448d6279222c8850c1_butterfly%203.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: float 5s   ease-in-out infinite;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        z-index: 0;
+    }
+.butterfly-text-2 {
+        position: fixed;
+        width: 300px;
+        font-family: "Delius", serif;
+        font-weight: 400;
+        font-style: normal;
+        height: 200px;
+        background-image: url("https://cdn.prod.website-files.com/635bd94b8b533d5752353a36/6763c4448d6279222c8850c1_butterfly%203.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+    }
+
+.text-content {
+    color: rgb(72, 21, 94);
+    font-size: 15px;
+    font-weight: 200;
+    text-align: center;
+    max-width: 120px;
+    word-wrap: break-word;
+    background: transparent;
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+    transform-style: preserve-3d;
+
+    }
+
+.modal 
+{
+        
+    transform: translate(-50%, -50%); 
+    width: 300px;
+    height: 500px;
+    background-color: rgb(2, 6, 82);
+    border-radius: 25px;
+    z-index: 2000;
+    display: flex; 
+    flex-direction: column;
+    background-color: rgb(167, 115, 180);
+    margin-top: 10%;
+    margin-left: 35%;
+    opacity: 0;
+    position:absolute;
+    background-image: url('https://cdn.prod.website-files.com/635bd94b8b533d5752353a36/6763e094c5a3d12101caf896_MirrorXR-Butterfly-Card.png');
+}
+
+.modal.active {
+            opacity: 1;
+            display: flex;  
+        }
+
+.modal-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+.modal-content {
+        display:flex;
+        position:relative;
+        align-items: center; 
+        justify-content: space-between; 
+        border-radius: 10px; 
+        max-width: 1200px; 
+        background: white;
+        background-color: rgb(167, 115, 180);
+        height: 100%;
+        width: 100%;
+    }
+
+.close-button 
+    {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: white;
+        padding: 10px;
+        z-index: 2000;  
+        transition: transform 0.2s;
+    }
+
+.close-button:hover {
+        transform: scale(1.1);
+        color: #ff69b4; 
+    }
+
+.card-text {
+    border-radius: 15px;
+    height: 200px;
+    width: 250px;
+    padding: 10px;
+    background-color: #ddb7ec;
+    margin-left: 10px;
+    margin-top: 200px;
+    margin-right: 10px;
+    overflow-wrap:break-word
+}
+.butterfly-text-box {
+        border-radius: 15px;
+        border:none;
+        height:20%;
+        width:40%;
+        padding:10px;
+        background: rgba(237, 220, 34, 0.3);
+        font-family: "Delius", serif;
+        font-weight: 400;
+        font-style: normal;
+
+
+    }
+.full-text-box {
+        border-radius: 15px;
+        height: 200px;
+        width: 250px;
+        padding: 10px;
+        background-color: #ddb7ec;
+        margin-left: 10px;
+        margin-top: 200px;
+        margin-right: 10px;
+        font-family: "Delius", serif;
+        font-weight: 400;
+        font-style: normal;
+}
+.nick-name-box {
+        position: fixed;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        bottom:0;
+        border-radius: 10px;
+        padding: 5px;
+        background-color: #ddb7ec;
+        width: 100px;
+        font-family: "Delius", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+    
+.popup-button 
+{
+    position: absolute;
+    width: 250px;
+    height: 250px; /* Set a height to make it square */
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 50px;
+    font-weight: 300;
+    background: url('https://cdn.prod.website-files.com/635bd94b8b533d5752353a36/67650a6949f5de488230389f_Mira-AI-Butterfly-Box-Pop-Up.gif') no-repeat center center;
+    background-size: contain; /* Ensures the GIF fits the button */
+    border: none; /* Removes default border */
+    cursor: pointer; /* Pointer cursor for better UX */
+}
+
+.popup-button:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+    transition: transform 0.2s ease-in-out;
+}
+    
+.submit-button{
+        position:fixed;
+        bottom:0;
+        right:0;
+        width:100px;
+        height:40px;
+        margin-right:30px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        border: #333;
+        background-color: #c169ff;
+        
+
+       
+        
+    }
+    
+.nickname-text
+    {
+        position: fixed;
+        margin-left: 40px;
+        margin-bottom: 10px;
+        bottom:0;
+        border-radius: 10px;
+        padding: 5px;
+        width: 100px;
+        overflow-wrap: break-word;
+    }
+@keyframes float {
+        0%, 100% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+            transform: translate(200px, -50px) rotate(5deg);
+        }
+        50% {
+            transform: translate(200px, 0) rotate(-5deg);
+        }
+        75% {
+            transform: translate(100px, 50px) rotate(3deg);
+        }
+    }
+
+    
+    
+@keyframes flutter {
+        0% {
+            transform: scale(1) rotate(-1deg);
+        }
+        100% {
+            transform: scale(1.02) rotate(1deg);
+        }
+    }
+
+    
+    
+@keyframes pop-in {
+        0% { 
+            transform: scale(0); 
+            opacity: 0; 
+        }
+        80% { 
+            transform: scale(1.1); 
+            opacity: 0.8; 
+        }
+        100% { 
+            transform: scale(1); 
+            opacity: 1; 
+        }
+    }
+
+   
+@media screen and (max-width: 430px) {
+
+.butterfly-body 
+{       
+   
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background-image: url('https://cdn.prod.website-files.com/635bd94b8b533d5752353a36/6763c4544b6924256e7af405_MirrorXR-Butterfly-Background-mob-cropped.jpg');
+    background-size:cover;
+
+       
+}
+.modal {
+    transform: translate(-50%, -50%); 
+    width: 300px;
+    height: 500px;
+    background-color: rgb(2, 6, 82);
+    border-radius: 25px;
+    z-index: 2000;
+    display: flex; 
+    flex-direction: column;
+    background-color: rgb(167, 115, 180);
+    margin-top: 15%;
+    margin-left: 10%;
+    opacity: 0;
+    position: absolute;
+}
+
+.butterfly-text {
+    position: absolute;
+    margin-right: 10px;
+    cursor: pointer;
+    user-select: none;
+    width: 200px;
+    height: 200px;
+    padding-top: 10px;
+    background-image: url('https://cdn.prod.website-files.com/635bd94b8b533d5752353a36/6763c4448d6279222c8850c1_butterfly%203.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: float 10s infinite ease-in-out;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+    z-index: 0;
+}
+.text-content {
+    color: rgb(72, 21, 94);
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    max-width: 120px;
+    word-wrap: break-word;
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+    transform-style: preserve-3d;
+}
+
+
+
+} 
+

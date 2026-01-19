@@ -1,0 +1,58 @@
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+    import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-storage.js";
+    import { getFirestore, collection, addDoc, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDiCIatzcDsnHdX_t-m15S1a8pNlrB2egs",
+        authDomain: "mira-7360b.firebaseapp.com",
+        projectId: "mira-7360b",
+        storageBucket: "mira-7360b.appspot.com",
+        messagingSenderId: "76074103771",
+        appId: "1:76074103771:web:1a2d4ca7e8b5df27a82dfe",
+        measurementId: "G-9YL8FHBDRX"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    const db = getFirestore(app);
+    const CHAR_BUTTERFLY_COLLECTION = "chat_butterfly";
+
+    window.deleteAllButterflies = async function() {
+        try {
+            const querySnapshot = await getDocs(collection(db, CHAR_BUTTERFLY_COLLECTION));
+            const batch = writeBatch(db);
+            
+            querySnapshot.forEach((doc) => {
+                batch.delete(doc.ref);
+            });
+
+            await batch.commit();
+            alert("All Documents Deleted Successfully");
+        } catch (error) {
+            alert("Error deleting documents: ");
+        }
+    }
+</script>
+
+
+<h1 style="margin-left:30%;margin-top:10%">Demolish all butterflies by clicking on the button</h1>
+<button 
+ style="
+   margin-left: 40%; 
+   margin-top:20%;
+   transition: all 0.1s;
+   border: none;
+   border-radius: 15px;
+   background: #ff0000;
+   color: white;
+   cursor: pointer;
+   width:300px;
+   height:100px;
+ "
+ onmousedown="this.style.transform='scale(0.95)'" 
+ onmouseup="this.style.transform='scale(1)'"
+ onclick="deleteAllButterflies()"
+>
+ Delete All
+</button>

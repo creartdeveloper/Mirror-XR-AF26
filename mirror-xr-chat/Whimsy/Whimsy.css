@@ -1,0 +1,148 @@
+
+        .logo {
+            width: 200px;
+            margin-bottom: 3rem;
+        }
+
+        .main-container {
+            margin-left: 30%;
+            width:450px;
+            height:650px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 15px;
+            align-items: center;
+            background-image: url('assets/chat-bg.jpg');
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;
+        
+        }
+
+        .message-box {
+            margin-top: 20%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            width: 70%;
+            height: 280px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-image: url('assets/text-box.png');
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: transparent;
+        }
+        .msg-text-box{
+          padding: 10px;
+          border:None;
+          margin-top:18% ;
+          width:95%;
+          height:50%;
+          background-color: transparent;
+          overflow: hidden;
+        }
+        .msg-text-box:focus {
+            border: none;
+            outline: none;
+            /* Optional: if you want to completely remove any focus styles */
+            box-shadow: none;
+        }
+
+        .pebble-section {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            width:70%;
+            height:10%;
+            background:transparent;
+            border-radius: 50px;
+            color:transparent;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .pebble-icon {
+            width: 150px;
+            height: 60px;
+        }
+        .kitty-icon{
+            width: 100px;
+            height: 70px;
+        }
+        .pebble-button{
+            background-color: transparent;
+            border:None;
+            
+        }
+        .pebble-button:focus {
+            outline: none;
+        }
+        .pebble-button:hover {
+            transform: scale(1.1);  /* Slightly larger on hover */
+            filter: brightness(1.1);  /* Slightly brighter on hover */
+        }
+
+        .pebble-button:active {
+            transform: scale(0.9);  /* Slight scale down when clicked */
+        }
+
+        .magical-items {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 1rem;
+        }
+
+        .items-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .item {
+            width: 100px;
+            height: 100px;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .item:hover {
+            transform: scale(1.05);
+        }
+
+        .item.hidden {
+            opacity: 0;
+            transform: scale(0);
+            width: 0;
+            margin: 0;
+        }
+
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .footer {
+            margin-top:-60px;
+            width:420px;
+            height:70px;
+            border-radius: 15px;
+            background-size: cover; 
+            background-position: center;
+            background-color: transparent;
+            background-image: url('assets/Pick-a-Magical-Item.png');
+        }
+
+        .items-container {
+            transition: gap 0.3s ease;
+        }
+
+        .items-container.single-item {
+            justify-content: center;
+        }

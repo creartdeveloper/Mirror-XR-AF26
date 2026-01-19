@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Butterfly Text</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Delius&family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="ipad.css">
+
+    </head>
+    <body class="butterfly-body">
+        <div id="butterfly-main-container">
+    
+           <button class="popup-button">
+
+           </button>
+            </div>
+    
+        </div>
+           
+    
+        <script type="module">
+            const textInput = document.getElementById('textInput');
+            const modal = document.createElement('div');
+            const modalContent = document.querySelector('.modal-content');
+            const closeButton = document.createElement('div');
+            const mainContainer = document.getElementById("butterfly-main-container");
+            let butterflies = [];
+            const butterflyTexts = {};
+            const maxButterflies = 10;
+            let id = 1;
+    
+            const addTextButton = document.querySelector('.popup-button');
+            modal.className = 'modal';
+            closeButton.className = 'close-button';
+            closeButton.innerHTML = '&times;'
+    
+            closeButton.addEventListener('click', (event) => {
+                hideModal();
+    });
+        
+            
+    
+           // Add click event to submit button
+            addTextButton.addEventListener('click', () => {
+                showModalWithTextBox();
+            });
+           
+    
+
+           function getRandomPosition() {
+                const x = Math.random() * (window.innerWidth - 400);
+                const y = Math.random() * (window.innerHeight - 400);
+                return { x, y };
+            }
+            
+            //
+            function showModalWithTextBox() 
+            {
+              modal.innerHTML = '';
+              const imageWithText = document.createElement('div');
+              
+              const textBox = document.createElement('textarea');
+              const textBox2 = document.createElement('textarea');
+              const nickNameBox = document.createElement('textarea');
+              
+              
+              textBox.className = 'butterfly-text-box';
+              textBox2.className = 'full-text-box';
+              imageWithText.className = 'butterfly-text-2';
+              nickNameBox.className = 'nick-name-box';
+              
+              modal.appendChild(closeButton);
+             
+              nickNameBox.placeholder = 'Nickname';
+              textBox.placeholder = 'Subject';
+              textBox2.placeholder = 'Message';
+              textBox.maxLength="50";
+              textBox2.maxLength="250";
+              nickNameBox.maxLength="15";
+              
+              
+              imageWithText.appendChild(textBox);
+              
+              
+              const textDiv = document.createElement('div');
+              textDiv.className = 'full-text-box';
+              textDiv.appendChild(textBox2);
+            
+    
+            
+             // Create submit button
+             const submitButton = document.createElement('button');
+             submitButton.innerHTML ="Submit";
+             submitButton.className = 'submit-button';
+    
+             const icon = document.createElement('i');
+             icon.className = 'fas fa-check'; // Add Font Awesome class for the check icon
+            
+           
+    
+    
+            
+             // Add click event to submit button
+            submitButton.addEventListener('click', () => {
+                const text1 = textBox.value; // Get text from the first text box
+                const text2 = textBox2.value;
+                const nickName = nickNameBox.value;
+                
+                //checking if the texts contain bad words//
+                if(checkBadWord(text1)||checkBadWord(text2)||checkBadWord(nickName))
+                {
+                    hideModal();
+                    modal.innerHTML = '';
+                    return ;
+                   
+                   
+                }
+               else{
+                // Available as a global window.crypto
+                const id = crypto.randomUUID();
+                createButterflyText(text1,nickName,id);
+                storeText(nickName,text1,text2,id);
+                addButterflyToFirestore(text1,text2,nickName,id);
+                hideModal();
+                modal.innerHTML = '';
+               } //commenting out create butterfly to prevent butterflies being created as this is for ipad only
+                
+            });
+    
+                      
+               
+                modal.appendChild(closeButton);
+                modal.appendChild(imageWithText);
+                modal.appendChild(textBox2);
+                modal.appendChild(nickNameBox);
+                modal.appendChild(submitButton);
+            
+                
+                modal.classList.add('active');
+                modal.style.animation = 'pop-in 0.3s ease forwards';
+                mainContainer.appendChild(modal);
+            
+            
+           
+     
+     
+    }
+    
+            //Stores each Butterfly in list
+            function storeText(nickName,shortText,fullText)
+            {
+                
+                const data ={};
+                data[shortText]=fullText;
+                butterflyTexts[nickName] = data;
+            
+            }
+    
+    
+            //Displays the Modal
+            function showModal(nickName) 
+            {
+              
+                modal.innerHTML='';
+                const fulldata = butterflyTexts[nickName];
+                const butterflyText = Object.keys(fulldata)[0];
+                const fullText = Object.values(fulldata)[0];
+                const imageWithText = document.createElement('div');
+                imageWithText.className = 'butterfly-text-2';
+                
+                const textContent = document.createElement('div');
+                textContent.className = 'text-content';
+                textContent.textContent = butterflyText;
+                
+                imageWithText.appendChild(textContent);
+                
+                const textDiv = document.createElement('div');
+                textDiv.className = 'card-text';
+                textDiv.innerHTML = fullText;
+                
+    
+    
+                const nickname = document.createElement('div');
+                nickname.className = 'nickname-text';
+                nickname.innerHTML = nickName;
+               
+    
+              
+               
+                modal.appendChild(closeButton);
+                modal.appendChild(imageWithText);
+                modal.appendChild(textDiv);
+                modal.appendChild(nickname);
+            
+    
+                
+            
+                modal.classList.add('active');
+                mainContainer.appendChild(modal);
+                modal.style.animation = 'pop-in 0.3s ease forwards';
+            
+    
+            }
+    
+            
+            //Hides The Modal
+            function hideModal() {
+            try {
+                // Check if modal exists and is a child of mainContainer
+                if (modal && modal.parentNode === mainContainer) {
+                    mainContainer.removeChild(modal);
+                    // Clear the modal content
+                    modal.innerHTML = '';
+                }
+            } catch (error) {
+                console.error('Error hiding modal:', error);
+            }
+        }
+    
+            // Create each butterfly
+            function createButterflyText(text,nickName,id) {
+    
+                const container = document.createElement('div');
+                container.id = id;
+                container.className = 'butterfly-text';
+                
+                const textContent = document.createElement('div');
+                textContent.className = 'text-content';
+                textContent.textContent = text.length > 50 ? text.substring(0, 5) + '...' : text;
+                container.appendChild(textContent);
+                
+                
+                const position = getRandomPosition();
+                container.style.left = position.x + 'px';
+                container.style.top = position.y + 'px';
+               
+                
+                container.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                textContent.style.animationDuration = (Math.random() * 0.3 + 0.8) + 's';
+                
+                container.addEventListener('click', () => {
+                    showModal(nickName);
+                });
+    
+                mainContainer.appendChild(container);
+                
+                if (butterflies.push(container) > maxButterflies) 
+                {
+                    
+                    const oldest = butterflies.shift();
+                    oldest.remove();
+                
+                }
+    
+            }
+    
+            // --------------------firebase initialise----------------------
+            // Import Firebase and initialize your app
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+            import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-storage.js";
+            import { getFirestore, collection, addDoc, getDocs,setDoc,doc,query,where } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+    
+            // Your Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyDiCIatzcDsnHdX_t-m15S1a8pNlrB2egs",
+                authDomain: "mira-7360b.firebaseapp.com",
+                projectId: "mira-7360b",
+                storageBucket: "mira-7360b.appspot.com",
+                messagingSenderId: "76074103771",
+                appId: "1:76074103771:web:1a2d4ca7e8b5df27a82dfe",
+                measurementId: "G-9YL8FHBDRX"
+            };
+    
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const storage = getStorage(app);
+            const badWordsArray = [];
+    
+            const db = getFirestore(app); // Initialize Firestore
+            const CHAR_BUTTERFLY_COLLECTION = "chat_butterfly";
+            const BAD_WORD_COLLECTION = "bad_words"
+            // --------------------end firebase initialise----------------------
+    
+            
+            
+            // sanitize the user input
+            function sanitizeInput(input) {
+                // Create a temporary element to use the browser's built-in HTML escaping
+                const element = document.createElement('div');
+                if (input) {
+                    element.innerText = input;
+                    return element.innerHTML; // This will escape HTML
+                }
+                return input;
+            }
+    
+            
+            //----Load Bad Words-------//
+            async function loadBadWordsFromFirestore() {
+                    try {
+                        const querySnapshot = await getDocs(collection(db, "bad_words"));
+                        querySnapshot.forEach((doc) => {
+                            const data = doc.data();
+                            // Split the string into individual words
+                            // Depending on how your data is formatted, use the appropriate split character
+                            const wordsArray = data.word
+                                .split(/[\n,\s]+/) // Split by newline, comma, or whitespace
+                                .map(word => word.trim().toLowerCase())
+                                .filter(word => word.length > 0);
+                            
+                            // Add the words to your array
+                            badWordsArray.push(...wordsArray);
+                        });
+                        
+                    } catch (error) {
+                        console.error("Error loading bad words:", error);
+                    }
+                }
+
+            
+                function checkBadWord(text)
+            {
+                
+                // Convert input text to lowercase for case-insensitive comparison
+                const inputText = text.toLowerCase();
+                let badtext="";
+                
+                // Check if any bad word is contained in the input text
+                const hasBadWords = badWordsArray.some(badWord => {
+                const regex = new RegExp(`\\b${badWord}\\b`, 'i');
+                return regex.test(inputText);
+            });
+                console.log(hasBadWords);
+                
+                if(hasBadWords) {
+                    return true;
+                }
+                return false;
+
+            }
+            
+            
+                // --------------------start retrieve the data----------------------
+            async function loadButterfliesFromFirestore() {
+               
+                const q = query(
+                collection(db, CHAR_BUTTERFLY_COLLECTION),
+                where("device", "==", "ipad"),
+                where("session","==","12")
+                );
+                const querySnapshot = await getDocs(q);
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const sanitizedKeyword = sanitizeInput(data.keyword);
+                    const sanitizedContent = sanitizeInput(data.content);
+                    const sanitizedNickname = sanitizeInput(data.nickname);
+                    const bid = sanitizeInput(data.id);
+                    storeText(sanitizedNickname,sanitizedKeyword,sanitizedContent);
+                    createButterflyText(sanitizedKeyword,sanitizedNickname,bid); // Display each butterfly
+                });
+            }
+            // Commenting this fucntion to prevent butterflies in the screen
+            
+            loadButterfliesFromFirestore();
+            loadBadWordsFromFirestore();
+            
+            // --------------------end retrieve the data----------------------
+    
+            async function addButterflyToFirestore(keyword, content, nickname,id) {
+                try { 
+                    
+                    const sanitizedKeyword = sanitizeInput(keyword);
+                    const sanitizedContent = sanitizeInput(content);
+                    const sanitizedNickname = sanitizeInput(nickname);
+
+                    // Create a new document with auto-generated ID in the collection
+                    const docRef = await addDoc(collection(db, CHAR_BUTTERFLY_COLLECTION), {
+                        id:id,
+                        device: "ipad",
+                        session:"12",
+                        keyword: sanitizedKeyword,
+                        content: sanitizedContent,
+                        nickname: sanitizedNickname,
+                    });
+
+                    console.log("Document written with ID: ", docRef.id);
+                    return docRef.id;
+
+                } catch (e) {
+                    console.error("Error adding document: ", e);
+                    throw e; // Propagate error to caller
+                }
+            }
+
+           
+        </script>
+    </body>
+    </html>
