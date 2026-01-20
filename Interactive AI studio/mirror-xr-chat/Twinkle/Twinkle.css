@@ -134,14 +134,6 @@
     transform: scale(0.9);  /* Slight scale down when clicked */
 }
 
-.twinkle-wrap{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-
-
-}
 
 .magical-items {
   width: 100%;
