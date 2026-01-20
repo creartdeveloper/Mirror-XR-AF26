@@ -1,108 +1,167 @@
+
+*{
+    box-sizing: border-box;
+}
 .logo {
     width: 200px;
     margin-bottom: 3rem;
 }
 
-.main-container{
-    width: min(90vw, 450px);
-    height: min(90vh, 650px);
+.app-shell {
+    width: 100vw;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+    overflow: hidden;
+}
 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center;
+.app-content {
+    width: min(100%, 900px);
+    height: auto;               
+    min-height: 100%;           
+    padding-top: clamp(2rem, 6vh, 5rem);
+    padding-bottom: 260px;
+    position: relative;
 
-    border-radius: 15px;
-    background-image: url('assets/chat-bg.jpg');
-    background-size:cover;
-    background-position: center; 
-    background-repeat: no-repeat;
-    position: fixed; 
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%);
+}
 
+
+.main-container {    
+  width: min(92vw, 520px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.6rem, 2vh, 1.2rem);
+
+  border-radius: 20px;
+  overflow: visible;   
+
+  background: transparent;
 }
 
 
 .message-box {
-    margin-top: 20%;
-    background: rgba(255, 255, 255, 0.9);
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 6 / 5; /* preserves original 600x500 design */
+    padding: 5px;
     border-radius: 24px;
-    width: 70%;
-    height: 280px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    background-image: url('assets/text-box.png');
-    background-size: cover; 
-    background-position: center;
+    background-image: url("../assets/chat-boxes/Resolume-IU-Twinkle-M.gif");
+
+    background-size: contain;
     background-repeat: no-repeat;
-    background-color: transparent;
-}
-.msg-text-box{
-  padding: 10px;
-  border:None;
-  margin-top:18% ;
-  width:95%;
-  height:50%;
-  background-color: transparent;
-  overflow: hidden;
-}
-.msg-text-box:focus {
-    border: none;
-    outline: none;
-    /* Optional: if you want to completely remove any focus styles */
-    box-shadow: none;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
-.pebble-section {
+.msg-text-box {
+    margin-top: 18%;
+    width: 83%;
+    height: 45%;
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    resize: none;
+    overflow: hidden;
+    font-family: "Delius", serif;
+    font-size: clamp(16px, 2.5vw, 22px);
+}
+
+.msg-text-box:focus {
+    outline: none;
+}
+
+
+.emoji-btn {
+    font-size: 48px;
+    padding: 0.25rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}  
+
+.emoji-container {
+    display: flex;
+    gap:1rem;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    width:fit-content; 
+    backdrop-filter: blur(6px);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.emoji-btn:hover{
+    transform: scale(1.15);
+}
+
+.twinkle-section {
+    justify-content: center;
     display: flex;
     align-items: center;
-    gap: 2rem;
-    width:70%;
-    height:10%;
-    background:transparent;
-    border-radius: 50px;
-    color:transparent;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+    width:80%;
 }
 
-.pebble-icon {
+.twinkle-icon {
     width: 150px;
-    height: 60px;
+    height: auto;
 }
+
 .kitty-icon{
-    width: 100px;
-    height: 70px;
+    width: 110px;
+    aspect-ratio: 1/ 1; 
+    object-fit: contain;
 }
-.pebble-button{
-    background-color: transparent;
+
+.twinkle-button{
+    background-color: none;
     border:None;
+    cursor:pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
     
 }
-.pebble-button:focus {
-    outline: none;
-}
-.pebble-button:hover {
+
+.twinkle-button:hover {
     transform: scale(1.1);  /* Slightly larger on hover */
     filter: brightness(1.1);  /* Slightly brighter on hover */
 }
 
-.pebble-button:active {
+.twinkle-button:active {
     transform: scale(0.9);  /* Slight scale down when clicked */
 }
 
-.magical-items {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 25px;
-    padding: 1rem;
+.twinkle-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+
+
 }
+
+.magical-items {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+}
+
 
 .items-container {
     display: flex;
     justify-content: space-around;
     gap: 1rem;
-    margin-top: 1rem;
+    transition: gap 0.3s ease;
+}
+
+.items-container.single-item{
+    justify-content:center;
 }
 
 .item {
@@ -111,20 +170,17 @@
     border-radius: 15px;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.3s ease;
-    opacity: 1;
-    transform: scale(1);
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
-
 .item:hover {
     transform: scale(1.05);
 }
-
+/*NEED TO CHECK THIS LATER */
 .item.hidden {
-    opacity: 0;
-    transform: scale(0);
-    width: 0;
-    margin: 0;
+    width: 100%;
+    height: 100%; 
+    object-fit: cover;
+
 }
 
 .item img {
@@ -132,257 +188,24 @@
     height: 100%;
     object-fit: cover;
 }
+.footer-ui {
+  position: absolute;
+  bottom: env(safe-area-inset-bottom, 1rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 520px);
 
-.footer {
-    margin-top:-60px;
-    width:420px;
-    height:70px;
-    border-radius: 15px;
-    background-size: cover; 
-    background-position: center;
-    background-color: transparent;
-    background-image: url('assets/Pick-a-Magical-Item.png');
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  padding: 0.75rem;
+  border-radius: 28px;
+
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+
+  z-index: 20;
 }
 
-.items-container {
-    transition: gap 0.3s ease;
-}
 
-.items-container.single-item {
-    justify-content: center;
-}
-
-/*
-
-/* .main-container {
-    margin-left: 30%;
-    width:min (90vw, 450px);
-    height:min(90vh, 650px);
-    display: flex;
-    flex-direction: column;
-    border-radius: 15px;
-    align-items: center;
-    background-image: url('assets/chat-bg.jpg');
-    background-size: cover; 
-    background-position: center;
-    background-repeat: no-repeat;
-    position: absolute;
-    top:50%;
-    left:50%; 
-    transform: translate(-50%, -50%);
-
-} */
-
-      /*Update main container
-        .main-container {
-            margin-top:20px;
-            width: 870px;
-            height: 1200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-image: url('assets/chat-bg.jpg');
-            background-size: cover; 
-            background-position: center;
-            background-repeat: no-repeat;
-            overflow: hidden;
-            position: fixed;  /* Add this */
-            /* top: 50%;        /* Add this */
-            /* left: 50%;       Add this */
-            /* transform: translate(-50%, -50%); Add this to center */
-        /* } */ 
-
-
-        /*Update main container
-        .main-container {
-            margin-top:20px;
-            width: 870px;
-            height: 1200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-image: url('assets/chat-bg.jpg');
-            background-size: cover; 
-            background-position: center;
-            background-repeat: no-repeat;
-            overflow: hidden;
-            position: fixed;  /* Add this */
-            /* top: 50%;        /* Add this */
-            /* left: 50%;       Add this */
-            /* transform: translate(-50%, -50%); Add this to center */
-        /* } */ 
-/* 
-        .message-box {
-            margin-top: 130px;
-            border-radius: 24px;
-            width: 600px;
-            height: 500px;
-            padding: 5px;
-            background-image: url('../Mirror XR Mira iPad UI/NEW Resolution/iPad-IU-Chat-Box.png');
-            background-size: contain; 
-            background-repeat: no-repeat;
-            background-color: transparent;
-        }
-        .msg-text-box{
-          padding: 10px;
-          border:None;
-          font-size: 22px;
-          margin-top:18% ;
-          width:500px;
-          height:250px;
-          background-color: transparent;
-          overflow: hidden;
-          font-family: "Delius", serif;
-        }
-        .msg-text-box:focus {
-            border: none;
-            outline: none;
-            /* Optional: if you want to completely remove any focus styles */
-            /* box-shadow: none; */
-        /* } */
-
-        /* .pebble-section {
-            display: flex;
-            align-items: center;
-            width:600px;
-            height:125px;
-            background:transparent;
-            border-radius: 50px;
-            font-size: 1.2rem;
-        }
-
-        .pebble-icon {
-            width: 340px;
-            height: 100px;
-        }
-        .kitty-icon{
-            width: 233px;
-            height: 200px;
-            margin-bottom: 80px;
-        }
-        .pebble-button{
-            background-color: transparent;
-            border:None;
-            
-        }
-        .pebble-button:focus {
-            outline: none; */
-        /* }
-        .pebble-button:hover {
-            transform: scale(1.1);  /* Slightly larger on hover */
-            /* filter: brightness(1.1);  Slightly brighter on hover */
-        /* }  */
-
-        /* .pebble-button:active {
-            transform: scale(0.9);  /* Slight scale down when clicked */
-        /* } */
-/* 
-        .magical-items {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 25px;
-            padding: 1rem;
-            background: transparent;
-        }
-
-        .items-container {
-            display: flex;
-            justify-content: center;
-            gap: 6rem;
-           
-           
-        }
-
-        .item {
-            width: 120px;
-            height: 120px;
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .item:hover {
-            transform: scale(1.05);
-        }
-
-        .item.hidden {
-            opacity: 0;
-            transform: scale(0);
-            width: 0;
-            margin: 0;
-        }
-        .item.selected {
-            position: relative;
-            left: 7%;
-            transform: translateX(-50%) scale(1.1);
-            transition: all 0.3s ease;
-        }
-
-        /* Container style when only one item is visible */
-        /* .items-container.single-item {
-            justify-content: center;
-            gap: 0;
-}
-        .item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .footer {
-            margin-top:-85px;
-            width:700px;
-            height:122px;
-            border-radius: 15px;
-            background-size: cover; 
-            background-position: center;
-            background-color: transparent;
-            background-image: url('../Mirror XR Mira iPad UI/NEW Resolution/iPad-IU-Pick-a-Magical-Item.png');
-        }
-
-        .items-container {
-            transition: gap 0.3s ease;
-        }
-
-        .items-container.single-item {
-            justify-content: center;
-        }
-
-        .emoji-container {
-        display: flex;
-        gap: 1rem;
-        background-color:transparent;
-        border-radius: 0.5rem;
-    }
-
-        .emoji-btn {
-            font-size: 3rem;
-            padding: 0.5rem;
-            border: none;
-            background: none;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            font-size: 70px;
-        }  */
-
-        /* .emoji-btn:hover {
-            transform: scale(1.2);
-        }
-        .emoji-btn:active {
-            transform: scale(0.95);
-            background-color: rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-        } */
-
-
-        /* Class for selected emoji */
-        /* .emoji-selected {
-            transform: scale(1.60);
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }   
-
-*/
