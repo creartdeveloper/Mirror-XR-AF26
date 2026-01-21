@@ -7,6 +7,13 @@ document.addEventListener("click", function (){
 
 const avatars = document.querySelectorAll('.avatar');
 const selectedAvatarImg = document.getElementById('selectedAvatarImg');
+const usernameInput = document.getElementById('username');
+const submitbutton = document.getElementById('submitbutton')
+
+//disable submit until avatar is chosen 
+submitbutton.disabled = true;
+
+//avatar selection
 
 avatars.forEach(avatar => {
     avatar.addEventListener('click', () => {
@@ -27,3 +34,26 @@ avatars.forEach(avatar => {
         sessionStorage.setItem('selectedAvatar', img.src);
     });
 });
+
+
+//generate username
+
+function generateUsername(){
+
+    const usernames = new Set();
+
+    while (usernames.size < count) {
+        const adj = adjectives[Math.floor(Math.random()* adjectives.length)];
+        const noun = nouns[Math.floor(Math.random() * nouns.length)];
+        const number = Math.floor(Math.random() * 100);
+
+        usernames.add(`${adj}${noun}${num}`);
+    }
+
+    return Array.from(usernames);
+
+
+}
+
+const name = generateUsername(200);
+console.log(username);
