@@ -1,0 +1,60 @@
+.logo {
+    width: 200px;
+    width: 20%;
+    height: auto;
+
+}
+
+.logo-wrapper{
+    display:flex;
+    justify-content:center;
+    margin-bottom: 3rem;
+}
+
+.app-shell{
+    min-height: 100svh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.app-content{
+    width: min(100%, 420px);
+    padding:2rem;
+}
+
+body{
+    color:white;
+}
+
+.profile-card{
+    width:min(30vw, 30px);
+    height: min(30vh, 30px);
+    background: #2e2338;
+    border: 6px solid #8f7cff;
+    border-radius: 28px;
+    padding: 2rem 1.5rem;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.avatar{
+    aspect-ratio: 1/1;
+    border-radius: 2   px;
+    border: 4px solid #8f7cff;
+    background: transparent;
+
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem;
+}
+
+.avatar img{
+    width: 15%;
+    height:15%;
+    object-fit:contain; 
+    pointer-events: none;
+
+}
