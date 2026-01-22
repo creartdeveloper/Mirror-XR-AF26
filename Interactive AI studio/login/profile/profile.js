@@ -2,7 +2,7 @@
 const avatars = document.querySelectorAll(".avatar");
 const selectedAvatarImg = document.getElementById("selectedAvatarImg");
 const usernameInput = document.getElementById("usernameInput");
-const selectedAvatar = document.querySelector('selected-avatar');
+const selectedAvatar = document.querySelector('.selected-avatar');
 const colorInput = document.getElementById('background-color');
 const defaultAvatars = [
     "./images/iPad-IU-Dewdrop.png",
@@ -163,7 +163,7 @@ usernameInput.addEventListener("keydown", (e) => {
 });
 
 // continue button 
-document.getElementById("nextbutton").addEventListener("click", () => {
+document.getElementById("nextButton").addEventListener("click", () => {
   validateAndLockUsername();
 
   const username = sessionStorage.getItem("username");
@@ -206,3 +206,25 @@ defaultAvatarImg.src = chosenDefault;
 //allows avatar to stay same if page reloads
 //sessionStorage lasts for browser session
 sessionStorage.setItem("defaultAvatar", chosenDefault);
+
+
+//redirect the page to next chat page + save session data 
+const nextButton = document.getElementById("nextButton");
+
+
+nextButton.addEventListener("click", () => {
+  validateAndLockUsername();
+
+  const username= sessionStorage.getItem("username");
+  const avatar = sessionStorage.getItem("selectedAvatar");
+  const bgColor = sessionStorage.getItem("avatarBgColor");
+
+  if(!username || !avatar) {
+    alert("Choose a Username");
+    return;
+  }
+
+
+window.location.href="../login/chat-box/chat-box.html";
+
+});
