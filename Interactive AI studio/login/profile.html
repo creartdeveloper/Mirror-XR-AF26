@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Delius&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./Profile.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/>
+
 
     
     <title>Mirror App</title>
@@ -29,6 +31,7 @@
 
     </style>
 </head>
+
     <body>
         <div class="app-shell">
             <div class="app-content">
@@ -75,10 +78,19 @@
                         <button class="avatar" data-id="19"></button>
                         <button class="avatar" data-id="20"></button>
                     </div>
-
+                    <div class="avatar-background">
+                        <label class="color-swatch">
+                            <input type="color" id="background-color" value="#FFFFFF">
+                            <span class="swatch-preview"></span>
+                        </label>
+                    </div>
                     <div class="bottom-bar">
+                        <div class="default-avatar" id="defaultavatar">
+                            <img id ="defaultAvatarimg" alt="default avatar">
+                        </div>
+                        
                         <div class="selected-avatar">
-                            <img id="selectedAvatarImg" alt="selected Avatar">
+                            <img id="selectedAvatarImg" alt="selectedAvatar">
                         </div>
 
                         <!---Random Username Generation-->
@@ -88,6 +100,7 @@
                         <button class="next-button" type="submit">Next</button>
                     </div>
                 </div>
+                <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
                 <script src="./profile.js" defer></script>
             </div>
         </div>

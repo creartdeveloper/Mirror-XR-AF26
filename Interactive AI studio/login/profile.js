@@ -2,8 +2,14 @@
 const avatars = document.querySelectorAll(".avatar");
 const selectedAvatarImg = document.getElementById("selectedAvatarImg");
 const usernameInput = document.getElementById("usernameInput");
-
-
+const selectedAvatar = document.querySelector('selected-avatar');
+const colorInput = document.getElementById('background-color');
+const defaultAvatars=[
+    "../images/iPad-IU-Dewdrop.png",
+    "../images/iPad-IU-Pebble.png",
+    "../images/iPad-IU-Twinkle.png",
+    "../images/iPad-IU-Whimsy.png"
+];
 
 // Returns a random integer between min and max (inclusive)
 function getRandomInt(min, max) {
@@ -169,3 +175,18 @@ document.getElementById("nextbutton").addEventListener("click", () => {
 
 
 });
+
+
+colorInput.addEventListener('input', () => {
+    selectedAvatar.style.backgroundColor = colorInput.value;
+
+});
+
+const defaultAvatarImg =document.getElementById("defaultAvatarImg");
+
+const randomIndex=Math.floor(Math.random() * defaultAvatars.length);
+const chosenDefault = defaultAvatars[randomIndex];
+
+defaultAvatarImg.src = chosenDefault; 
+
+sessionStorage.setItem("defaultAvatar", chosenDefault);
