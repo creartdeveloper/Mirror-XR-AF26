@@ -5,10 +5,18 @@
             margin-left: 30%;
         }
 
+        #nextButton:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
         .poll{
             display: flex;
             flex-direction: column; 
-            gap:10px;
+            gap:10 px;
+        }
+
+        .poll.active{
+            opacity: 1;
         }
 
         /* Common styles for all boxes */

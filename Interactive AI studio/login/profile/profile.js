@@ -1,215 +1,155 @@
-
-const avatars = document.querySelectorAll(".avatar");
-const selectedAvatarImg = document.getElementById("selectedAvatarImg");
-const usernameInput = document.getElementById("usernameInput");
-const selectedAvatar = document.querySelector('.selected-avatar');
-const colorInput = document.getElementById('background-color');
-const defaultAvatars = [
-    "./images/iPad-IU-Dewdrop.png",
-    "./images/iPad-IU-Pebble.png",
-    "./images/iPad-IU-Twinkle.png",
-    "./images/iPad-IU-Whimsy.png"
-];
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Profile page JS loaded");
 
 
-// Returns a random integer between min and max (inclusive)
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+  const avatars = document.querySelectorAll(".avatar");
+  const selectedAvatarImg = document.getElementById("selectedAvatarImg");
+  const usernameInput = document.getElementById("usernameInput");
+  const selectedAvatar = document.querySelector(".selected-avatar");
+  const colorInput = document.getElementById("background-color");
+  const nextButton = document.getElementById("nextButton");
 
-// Username rules: 3–16 chars, letters, numbers, underscore
-function isValidUsername(name) {
-  return /^[a-zA-Z0-9_]{3,16}$/.test(name);
-}
+  if (!avatars.length || !nextButton || !usernameInput) {
+    console.error("Critical DOM elements missing");
+    return;
+  }
 
-//profanity list 
-let bannedWords = [];
+ 
+  const adjectives = [
+    "Bouncy","Zippy","Snappy","Wiggly","Sparkly",
+    "Chunky","Fizzy","Speedy","Goofy","Spooky",
+    "Flashy","Slinky","Loopy","Cheeky","Buzzy"
+  ];
 
-fetch("./words.json")
-  .then(res => res.json())
-  .then(data => {
-    bannedWords = data.map(w => w.toLowerCase());
-    console.log("Profanity list loaded:", bannedWords.length);
+  const nouns = [
+    "Orb","Boost","Zap","Token","Pad",
+    "Bar","Ring","Beam","Tile","Dash",
+    "Loop","Meter","Core","Chip","Pulse"
+  ];
 
-    if (bannedWords.length === 0) {
-      console.warn("Profanity list is empty");
+  let usernameAssigned = false;
+  let isEditingUsername = false;
+  const usedUsernames = new Set();
+  let bannedWords = [];
+
+  
+  const getRandomInt = (min, max) =>
+    Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const isValidUsername = (name) =>
+    /^[a-zA-Z0-9_]{3,16}$/.test(name);
+
+  const generateUsername = () => {
+    let name;
+    do {
+      name =
+        adjectives[getRandomInt(0, adjectives.length - 1)] +
+        nouns[getRandomInt(0, nouns.length - 1)] +
+        getRandomInt(0, 9);
+    } while (usedUsernames.has(name));
+
+    usedUsernames.add(name);
+    return name;
+  };
+
+
+  fetch("./words.json")
+    .then(res => res.json())
+    .then(data => bannedWords = data.map(w => w.toLowerCase()))
+    .catch(() => console.warn("Profanity list failed to load", bannedWords.length));
+
+  const containsProfanity = name =>
+    bannedWords.some(w => name.toLowerCase().includes(w));
+
+  const validateAndLockUsername = () => {
+    if (!isEditingUsername) return true;
+
+    const name = usernameInput.value.trim();
+
+    if (!isValidUsername(name)) {
+      alert("Username must be 3–16 characters");
+      usernameInput.value = sessionStorage.getItem("username") || "";
+      return false;
     }
-  })
-  .catch(err => console.error("Failed to load profanity list", err));
 
-function containsProfanity(username) {
-  const lower = username.toLowerCase();
-  return bannedWords.some(word => lower.includes(word));
-}
+    if (containsProfanity(name)) {
+      alert("Please choose a different username");
+      usernameInput.value = sessionStorage.getItem("username") || "";
+      return false;
+    }
 
-// 15 adjectives 
-const adjectives = [
-  "Bouncy", "Zippy", "Snappy", "Wiggly", "Sparkly",
-  "Chunky", "Fizzy", "Speedy", "Goofy", "Spooky",
-  "Flashy", "Slinky", "Loopy", "Cheeky", "Buzzy"
-];
+    sessionStorage.setItem("username", name);
+    usernameInput.readOnly = true;
+    isEditingUsername = false;
+    updateNextButtonState();
+    return true;
+  };
 
-// 15 nouns
-const nouns = [
-  "Orb", "Boost", "Zap", "Token", "Pad",
-  "Bar", "Ring", "Beam", "Tile", "Dash",
-  "Loop", "Meter", "Core", "Chip", "Pulse"
-];
+  avatars.forEach(avatar => {
+    avatar.addEventListener("click", () => {
+      avatars.forEach(a => a.classList.remove("selected"));
+      avatar.classList.add("selected");
 
+      const img = avatar.querySelector("img");
+      if (!img) return;
 
-let usernameAssigned = false;
-const usedUsernames = new Set();
+      selectedAvatarImg.src = img.src;
+      selectedAvatarImg.style.display = "block";
+      sessionStorage.setItem("selectedAvatar", img.src);
+ 
 
+      if (!usernameAssigned) {
+        const name = generateUsername();
+        usernameInput.value = name;
+        sessionStorage.setItem("username", name);
+        usernameAssigned = true;
 
-function generateUsernameForAvatar() {
-  let username;
+      }
 
-  do {
-    const adj = adjectives[getRandomInt(0, adjectives.length - 1)];
-    const noun = nouns[getRandomInt(0, nouns.length - 1)];
-    const number = getRandomInt(0, 9);
-
-    username = `${adj}${noun}${number}`;
-  } while (usedUsernames.has(username));
-
-  usedUsernames.add(username);
-  return username;
-}
+      updateNextButtonState();
+    });
+  });
 
 
-avatars.forEach(avatar => {
-  avatar.addEventListener("click", () => {
-
-    // Remove previous selection
-    avatars.forEach(a => a.classList.remove("selected"));
-    avatar.classList.add("selected");
-
-    // Get avatar image
-    const img = avatar.querySelector("img");
-    if (!img) return;
-
-    // Update avatar preview in bottom bar
-    selectedAvatarImg.src = img.src;
-    selectedAvatarImg.style.display = "block";
-
-    // Store avatar for next page
-    sessionStorage.setItem("selectedAvatar", img.src);
-
-    // Generate username ONLY ON FIRST SELECTION
+  usernameInput.addEventListener("focus", () => {
     if (!usernameAssigned) {
-      const username = generateUsernameForAvatar();
+      usernameInput.blur();
+      return;
+    }
+    isEditingUsername = true;
+    usernameInput.readOnly = false;
+  });
 
-      usernameInput.value = username;
-      usernameInput.readOnly = false; // locked but still selectable
-      sessionStorage.setItem("username", username);
+  usernameInput.addEventListener("blur", validateAndLockUsername);
 
-      usernameAssigned = true;
+  usernameInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      validateAndLockUsername();
+      usernameInput.blur();
     }
   });
-});
-
-let isEditingUsername = false;
-
- // enable user to edit username after username is randomly generated 
-usernameInput.addEventListener("focus", () => {
-  if (!usernameAssigned) {
-    usernameInput.blur();
-    return;
-  }
-  isEditingUsername = true;
-  usernameInput.readOnly = false;
-});
 
 
-// validate and lock username
-function validateAndLockUsername() {
-  if (!isEditingUsername) return;
-
-  const name = usernameInput.value.trim();
-
-  // Rule check
-  if (!isValidUsername(name)) {
-    alert("Username must be 3–16 characters and use only letters, numbers, or _");
-    usernameInput.value = sessionStorage.getItem("username");
-    usernameInput.readOnly = true;
-    isEditingUsername = false;
-    return;
-  }
-
-  // Profanity check
-  if (containsProfanity(name)) {
-    alert("Please choose a different username");
-    usernameInput.value = sessionStorage.getItem("username");
-    usernameInput.readOnly = true;
-    isEditingUsername = false;
-    return;
-  }
-
-
-  usernameInput.readOnly = true;
-  sessionStorage.setItem("username", name);
-  isEditingUsername = false;
-}
-
-// if user clicks anywhere else  = blur or when user clicks away blur
-usernameInput.addEventListener("blur", validateAndLockUsername);
-
-//lock on enter
-usernameInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    validateAndLockUsername();
-    usernameInput.blur();
-  }
-});
-
-
-colorInput.addEventListener('input', () => {
+  colorInput.addEventListener("input", () => {
     selectedAvatar.style.backgroundColor = colorInput.value;
-
-});
-
-// get img element displays default avatar
-// this lets us change the avatar image dynamically
-
-const defaultAvatarImg =document.getElementById("defaultAvatarImg");
-
-//generate random number between 0 and (number of defaults -1)
-//math.random gives number between 0 and 0.999
-// multiply default avatars lenght scales it to array size
-// math.floor() rounds it down to a whole number (array index)
-const randomIndex=Math.floor(Math.random() * defaultAvatars.length);
-
-//use random index to select one avatar from the array
-//default avatars is array link
-const chosenDefault = defaultAvatars[randomIndex];
-
-//set src of image element to chosen avatar
-
-defaultAvatarImg.src = chosenDefault; 
-
-//save chosen avatar in session storage
-//allows avatar to stay same if page reloads
-//sessionStorage lasts for browser session
-sessionStorage.setItem("defaultAvatar", chosenDefault);
+    sessionStorage.setItem("avatarBgColor", colorInput.value);
+    updateNextButtonState();
+  });
 
 
-//redirect the page to next chat page + save session data 
-const nextButton = document.getElementById("nextButton");
+  nextButton.addEventListener("click", e => {
+    e.preventDefault();
 
+    if (nextButton.disabled) return;
 
-nextButton.addEventListener("click", () => {
-  validateAndLockUsername();
+    window.location.href = "../chatbox/chatbox.html";
+  });
 
-  const username= sessionStorage.getItem("username");
-  const avatar = sessionStorage.getItem("selectedAvatar");
-  const bgColor = sessionStorage.getItem("avatarBgColor");
+  function updateNextButtonState() {
+    const hasAvatar = !!sessionStorage.getItem("selectedAvatar");
+    const hasUsername = !!sessionStorage.getItem("username");
+    const hasBg = !!sessionStorage.getItem("avatarBgColor");
 
-  if(!username || !avatar) {
-    alert("Choose a Username");
-    return;
+    nextButton.disabled = !(hasAvatar && hasUsername && hasBg);
   }
-
-
-window.location.href="../login/chat-box/chat-box.html";
-
 });
