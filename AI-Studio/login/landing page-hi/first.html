@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Delius&family=Pacifico&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./userID.css">
+    <link rel="stylesheet" href="./first.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/>
 
 
@@ -33,16 +33,31 @@
 </head>
 
     <body>
-        <div class="app-shell">
-            <div class="app-content">
-                <div class="logo-wrapper">
-                    <img src="../images/logo.png" alt="Mirror XR Logo" class="logo">
-                </div>
+        <nav class=nav-header>
+            <div class="nav-logo">
+                <img src="../images/logo.png" alt="Mirror XR Logo" class="logo">
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href = "#">Home</a></li>
+                <li><a href = "#">Score</a></li>
+                <li><a href = "#">Gallery</a></li>
+                <li><a href = "#">Contact</a></li>
+            </ul>
+        </nav>
+        <main class="app-shell">
+                <div class="app-content">
+                        <section class="hero">
+                            <img src ="https://cdn.prod.website-files.com/635bd94b8b533d5752353a36/67650a6949f5de488230389f_Mira-AI-Butterfly-Box-Pop-Up.gif" alt="Mira-AI" class="mira"/>
+                            <a href="../userID/userID.html" class="sign-in-link">
+                                <button class="sign-in">Sign in </button>
+                            </a>
 
-
+                        </section>
+                    
                 </div>
-                <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
-                <script src="./first.js"></script>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+        <script src="./first.js"></script>
 
             </div>
         </div>

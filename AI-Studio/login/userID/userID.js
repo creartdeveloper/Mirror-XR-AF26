@@ -28,16 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   let usernameAssigned = false;
-  let isEditingUsername = false;
   const usedUsernames = new Set();
-  let bannedWords = [];
 
-  
+
   const getRandomInt = (min, max) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
   const isValidUsername = (name) =>
-    /^[a-zA-Z0-9_]{3,16}$/.test(name);
+    /^[a-zA-Z0-9_]{8,16}$/.test(name);
 
   const generateUsername = () => {
     let name;
@@ -52,38 +50,24 @@ document.addEventListener("DOMContentLoaded", () => {
     return name;
   };
 
+  let bannedWords = [];
+  let profanityLoaded=false;
 
-  fetch("./words.json")
-    .then(res => res.json())
-    .then(data => bannedWords = data.map(w => w.toLowerCase()))
-    .catch(() => console.warn("Profanity list failed to load", bannedWords.length));
+  fetch("../words.json")
+    .then(res => {
+      if(!res.ok) throw new Error("words.json not found");
+      return res.json();
+    })
+    .then(data => {
+      bannedWords = data.map(w => w.toLowerCase());
+      profanityLoaded = true; 
+      console.log("Profanity list loaded:", bannedWords.length);
+      updateNextButtonState();
+    })
+    .catch(err => {
+      console.warn("Profanity list failed to load", err);
 
-  const containsProfanity = name =>
-    bannedWords.some(w => name.toLowerCase().includes(w));
-
-  const validateAndLockUsername = () => {
-    if (!isEditingUsername) return true;
-
-    const name = usernameInput.value.trim();
-
-    if (!isValidUsername(name)) {
-      alert("Username must be 3–16 characters");
-      usernameInput.value = sessionStorage.getItem("username") || "";
-      return false;
-    }
-
-    if (containsProfanity(name)) {
-      alert("Please choose a different username");
-      usernameInput.value = sessionStorage.getItem("username") || "";
-      return false;
-    }
-
-    sessionStorage.setItem("username", name);
-    usernameInput.readOnly = true;
-    isEditingUsername = false;
-    updateNextButtonState();
-    return true;
-  };
+    });
 
   avatars.forEach(avatar => {
     avatar.addEventListener("click", () => {
@@ -96,7 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedAvatarImg.src = img.src;
       selectedAvatarImg.style.display = "block";
       sessionStorage.setItem("selectedAvatar", img.src);
- 
+      
+      usernameInput.disabled=false; 
+      usernameInput.classList.add("enabled");
 
       if (!usernameAssigned) {
         const name = generateUsername();
@@ -110,23 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-
-  usernameInput.addEventListener("focus", () => {
-    if (!usernameAssigned) {
-      usernameInput.blur();
-      return;
-    }
-    isEditingUsername = true;
-    usernameInput.readOnly = false;
-  });
-
-  usernameInput.addEventListener("blur", validateAndLockUsername);
-
-  usernameInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-      validateAndLockUsername();
-      usernameInput.blur();
-    }
+  usernameInput.addEventListener("input", () => {
+    sessionStorage.setItem("username", usernameInput.value.trim());
+    updateNextButtonState();
   });
 
   colorInput.addEventListener("input", () => {
