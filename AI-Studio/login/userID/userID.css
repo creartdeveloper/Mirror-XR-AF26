@@ -212,7 +212,7 @@ body{
   .logo {
     max-height: 64px;
   }
-  
+
   .avatar-grid {
     gap: 8px;
   }
@@ -220,12 +220,18 @@ body{
   .logo-wrapper {
     margin-bottom: 1.5rem;
   }
-
+  
   .bottom-bar {
     padding: 0.6rem;
   }
 
   #usernameInput {
     font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    background-position: center center;
   }
 }
