@@ -1,3 +1,6 @@
+alert("userID.js is running");
+
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Profile page JS loaded");
 
@@ -137,13 +140,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  nextButton.addEventListener("click", e => {
-    e.preventDefault();
+  // nextButton.addEventListener("click", e => {
+  //   e.preventDefault();
 
-    if (nextButton.disabled) return;
+  //   if (nextButton.disabled) return;
 
-    window.location.href = "../chatbox/chatbox.html";
-  });
+  //   window.location.href = "../Chat/chat.html";
+  // });
+
+  nextButton.addEventListener("click", () => {
+  window.location.replace("../Chat/chat.html");
+});
 
   function updateNextButtonState() {
     const hasAvatar = !!sessionStorage.getItem("selectedAvatar");
