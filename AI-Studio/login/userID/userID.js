@@ -1,6 +1,3 @@
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Profile page JS loaded");
 
@@ -132,21 +129,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
   colorInput.addEventListener("input", () => {
     selectedAvatar.style.backgroundColor = colorInput.value;
     sessionStorage.setItem("avatarBgColor", colorInput.value);
     updateNextButtonState();
   });
-
-
-  // nextButton.addEventListener("click", e => {
-  //   e.preventDefault();
-
-  //   if (nextButton.disabled) return;
-
-  //   window.location.href = "../Chat/chat.html";
-  // });
 
   nextButton.addEventListener("click", () => {
   window.location.replace("../Chat/chat.html");
