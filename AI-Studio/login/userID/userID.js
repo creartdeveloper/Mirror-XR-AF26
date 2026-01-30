@@ -1,20 +1,69 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Profile page JS loaded");
 
-
   const avatars = document.querySelectorAll(".avatar");
   const selectedAvatarImg = document.getElementById("selectedAvatarImg");
+  const defaultAvatarImg = document.getElementById("defaultAvatarimg");
   const usernameInput = document.getElementById("usernameInput");
   const selectedAvatar = document.querySelector(".selected-avatar");
-  const colorInput = document.getElementById("background-color");
   const nextButton = document.getElementById("nextButton");
 
-  if (!avatars.length || !nextButton || !usernameInput) {
+  if (!avatars.length || !nextButton || !usernameInput || !selectedAvatar) {
     console.error("Critical DOM elements missing");
     return;
   }
 
- 
+
+  const defaultAvatars = [
+    "../images/iPad-IU-Dewdrop.png",
+    "../images/iPad-IU-Pebble.png",
+    "../images/iPad-IU-Twinkle.png",
+    "../images/iPad-IU-Whimsy.png"
+  ];
+
+  const pickr = Pickr.create({
+    el: "#background-color",
+    theme: "classic",
+    default: sessionStorage.getItem("avatarBgColor") || "#ffffff",
+    components: {
+      preview: true,
+      opacity: false,
+      hue: true,
+      interaction: {
+        hex: true,
+        input: true,
+        save: true
+      }
+    }
+  });
+
+  pickr.disable();
+
+  pickr.on("save", (color) => {
+    const hex = color.toHEXA().toString();
+    selectedAvatar.style.backgroundColor = hex;
+    sessionStorage.setItem("avatarBgColor", hex);
+    pickr.hide();
+    updateNextButtonState();
+  });
+
+  function assignDefaultAvatar() {
+    if (!sessionStorage.getItem("realAvatarSelected")) {
+      const randomAvatar =
+        defaultAvatars[Math.floor(Math.random() * defaultAvatars.length)];
+
+      defaultAvatarImg.src = randomAvatar;
+      defaultAvatarImg.style.display = "block";
+      selectedAvatarImg.style.display = "none";
+
+      sessionStorage.setItem("isDefaultAvatar", "true");
+
+      usernameInput.disabled = false;
+      usernameInput.classList.add("enabled");
+    }
+  }
+
+
   const adjectives = [
     "Bouncy","Zippy","Snappy","Wiggly","Sparkly",
     "Chunky","Fizzy","Speedy","Goofy","Spooky",
@@ -28,46 +77,15 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   let usernameAssigned = false;
-  const usedUsernames = new Set();
-
 
   const getRandomInt = (min, max) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
-  const isValidUsername = (name) =>
-    /^[a-zA-Z0-9_]{8,16}$/.test(name);
+  const generateUsername = () =>
+    adjectives[getRandomInt(0, adjectives.length - 1)] +
+    nouns[getRandomInt(0, nouns.length - 1)] +
+    getRandomInt(0, 9);
 
-  const generateUsername = () => {
-    let name;
-    do {
-      name =
-        adjectives[getRandomInt(0, adjectives.length - 1)] +
-        nouns[getRandomInt(0, nouns.length - 1)] +
-        getRandomInt(0, 9);
-    } while (usedUsernames.has(name));
-
-    usedUsernames.add(name);
-    return name;
-  };
-
-  let bannedWords = [];
-  let profanityLoaded=false;
-
-  fetch("../words.json")
-    .then(res => {
-      if(!res.ok) throw new Error("words.json not found");
-      return res.json();
-    })
-    .then(data => {
-      bannedWords = data.map(w => w.toLowerCase());
-      profanityLoaded = true; 
-      console.log("Profanity list loaded:", bannedWords.length);
-      updateNextButtonState();
-    })
-    .catch(err => {
-      console.warn("Profanity list failed to load", err);
-
-    });
 
   avatars.forEach(avatar => {
     avatar.addEventListener("click", () => {
@@ -77,19 +95,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const img = avatar.querySelector("img");
       if (!img) return;
 
+      defaultAvatarImg.style.display = "none";
       selectedAvatarImg.src = img.src;
       selectedAvatarImg.style.display = "block";
+
       sessionStorage.setItem("selectedAvatar", img.src);
-      
-      usernameInput.disabled=false; 
-      usernameInput.classList.add("enabled");
+      sessionStorage.setItem("realAvatarSelected", "true");
+      sessionStorage.removeItem("isDefaultAvatar");
+
+      pickr.enable();
 
       if (!usernameAssigned) {
         const name = generateUsername();
         usernameInput.value = name;
         sessionStorage.setItem("username", name);
         usernameAssigned = true;
-
       }
 
       updateNextButtonState();
@@ -101,21 +121,19 @@ document.addEventListener("DOMContentLoaded", () => {
     updateNextButtonState();
   });
 
-  colorInput.addEventListener("input", () => {
-    selectedAvatar.style.backgroundColor = colorInput.value;
-    sessionStorage.setItem("avatarBgColor", colorInput.value);
-    updateNextButtonState();
+  nextButton.addEventListener("click", () => {
+    window.location.href = "../Chat/chat.html";
   });
 
-  nextButton.addEventListener("click", () => {
-  window.location.replace("../Chat/chat.html");
-});
-
   function updateNextButtonState() {
-    const hasAvatar = !!sessionStorage.getItem("selectedAvatar");
     const hasUsername = !!sessionStorage.getItem("username");
-    const hasBg = !!sessionStorage.getItem("avatarBgColor");
+    const hasBg = sessionStorage.getItem("isDefaultAvatar")
+      ? true
+      : !!sessionStorage.getItem("avatarBgColor");
 
-    nextButton.disabled = !(hasAvatar && hasUsername && hasBg);
+    nextButton.disabled = !(hasUsername && hasBg);
   }
+
+  assignDefaultAvatar();
+  updateNextButtonState();
 });
